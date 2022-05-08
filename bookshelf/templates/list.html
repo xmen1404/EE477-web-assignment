@@ -1,0 +1,66 @@
+{#
+# Copyright 2015 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Books</h3>
+<a href="/books/add" class="btn btn-success btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Add book
+</a>
+<div class="d-flex flex-wrap mt-5">
+  {% for book in books %}
+  <div class="w-30 p-3 ms-5">
+    <a href="/books/{{book.id}}" class="text-decoration-none d-flex flex-column justify-content-center">
+      <div>
+        <img src="http://placekitten.com/g/128/192">
+      </div>
+
+      <h4 class="mt-2 text-center">{{book.title}}</h4>
+      
+      <div class="d-flex justify-content-evenly">
+        {% for idx in range(5) %}
+          {% if book.rating > idx %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style='color: #f3da35'>
+              <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+            </svg>
+            <!-- <span class="glyphicon glyphicon-star" style='color: #f3da35'></span> -->
+          {% else %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style='color: #eeeeec'>
+            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+          </svg>
+            <!-- <span class="glyphicon glyphicon-star" style='color: #eeeeec'></span> -->
+          {% endif %}
+        {% endfor %}
+      </div>
+    </a>
+  </div>
+  {% else %}
+  <p>No books found</p>
+  {% endfor %}
+</div>
+
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

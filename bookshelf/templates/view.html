@@ -1,0 +1,108 @@
+{#
+# Copyright 2015 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Book</h3>
+
+<div class="btn-group mt-3">
+  <a href="/books/{{book.id}}/edit" class="btn btn-primary btn-sm">
+    <i class="glyphicon glyphicon-edit"></i>
+    Edit book
+  </a>
+  <a href="/books/{{book.id}}/delete" class="btn btn-danger btn-sm ms-3">
+    <i class="glyphicon glyphicon-trash"></i>
+    Delete book
+  </a>
+</div>
+
+<div class="media mt-3">
+  <div class="media-left">
+    <img class="book-image" src="http://placekitten.com/g/128/192">
+  </div>
+  <div class="media-body">
+    <h4 class="book-title">
+      {{book.title}}
+      <small>{{book.publishedDate}}</small>
+    </h4>
+    <h5 class="book-author">By {{book.author|default('Unknown', True)}}</h5>
+    <p class="book-description">{{book.description}}</p>
+  </div>
+</div>
+
+<h4 class="mt-5"> Review List </h4>
+<div class="ps-3">
+  {% if not book.reviewer %}
+    <p> <u>There are no review</u> </p>
+  {% else %}
+    <div> {{book.review}} </div>
+    <div class="d-flex justify-content-evenly">
+      {% for idx in range(5) %}
+        {% if book.rating > idx %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style='color: #f3da35'>
+            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+          </svg>
+          <!-- <span class="glyphicon glyphicon-star" style='color: #f3da35'></span> -->
+        {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style='color: #eeeeec'>
+          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+        </svg>
+          <!-- <span class="glyphicon glyphicon-star" style='color: #eeeeec'></span> -->
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div> {{book.comment}} </div>
+  {% endif %}
+</div>
+
+<h4 class="mt-5"> Write review </h4>
+<div class="mt-1 ps-3">
+  <form method="POST" enctype="multipart/form-data">
+
+    <div class="form-group">
+      <input type="hidden" name="userId" id="bookId" value="1" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+      <input type="hidden" name="bookId" id="bookId" value="{{book.id}}" class="form-control"/>
+    </div>
+
+    <div class="form-group mt-2">
+      <p style="color: green;"> * Rating: </p>
+      <input type="radio" id="s1" name="rating" value="1">
+      <label for="s1"> Bad</label><br>
+      <input type="radio" id="s2" name="rating" value="2">
+      <label for="s2"> Normal </label><br>
+      <input type="radio" id="s3" name="rating" value="3" checked>
+      <label for="s3"> Good</label><br>
+      <input type="radio" id="s4" name="rating" value="4">
+      <label for="s4"> Recommended</label><br>
+      <input type="radio" id="s5" name="rating" value="5">
+      <label for="s5"> Must read</label><br>
+    </div>
+
+    <div class="form-group mt-3">
+      <label for="comment" style="color: green;">* Comment</label>
+      <input type="text" name="comment" id="comment" class="form-control mt-1"/>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-2">Save</button>
+  </form>
+</div>
+
+{% endblock %}
